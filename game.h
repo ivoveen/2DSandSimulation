@@ -4,8 +4,11 @@
 
 #pragma once
 
+class SandSim;
+
 namespace Tmpl8
 {
+
 
 class Game : public TheApp
 {
@@ -16,7 +19,7 @@ public:
 	void Shutdown() { /* implement if you want to do something on exit */ }
 	// input handling
 	void MouseUp( int ) { /* implement if you want to detect mouse button presses */ }
-	void MouseDown( int ) { /* implement if you want to detect mouse button presses */ }
+	void MouseDown(int);
 	void MouseMove( int x, int y ) { mousePos.x = x, mousePos.y = y; }
 	void MouseWheel( float ) { /* implement if you want to handle the mouse wheel */ }
 	void KeyUp( int ) { /* implement if you want to handle keys */ }
@@ -24,9 +27,8 @@ public:
 	// data members
 	int2 mousePos;
 private:
-	//sand sim stuff
-	float sand[SCRWIDTH][SCRHEIGHT];
-	int sandSize = 10;
+	SandSim* theSim;
 };
 
 } // namespace Tmpl8
+

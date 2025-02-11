@@ -6,6 +6,7 @@
 #include "game.h"
 #include <ctime> 
 #include "imgui.h"
+#include "SandSim.h"
 
 // -----------------------------------------------------------
 // Initialize the application
@@ -17,29 +18,28 @@ void Game::Init()
 	time_ptr = time(NULL);
 	tm* tm_local = localtime(&time_ptr);
 	InitSeed(static_cast<uint>(tm_local->tm_sec * tm_local->tm_min * tm_local->tm_hour * tm_local->tm_wday * tm_local->tm_year));
+	
+	theSim = new SandSim(screen);
 
-	//init sand grid
-	for (int i = 0; i < SCRWIDTH; i++) {
-		for (int j = 0; j < SCRHEIGHT; j++) {
-			sand[i][j] = 0;
-
-		}
-	}
+	
 }
 
 // -----------------------------------------------------------
 // Main application tick function - Executed once per frame
 // -----------------------------------------------------------
-void Game::Tick( float  deltaTime  )
+void Game::Tick(float  deltaTime)
 {
-	deltaTime = min( deltaTime, 0.1f );
-	screen->Clear( 0 );
+	deltaTime = min(deltaTime, 0.1f);
+	screen->Clear(0);
 #ifdef _DEBUG
-
+	
 #endif
-
-
-
-
+	theSim->Update(deltaTime);
+	theSim->Draw();
 }
+
+void Game::MouseDown(int button) {
+	if (button == GLFW_MOUSE_BUTTON_1)theSim->PlaceSand(mousePos.x, mousePos.y);
+}
+
 
