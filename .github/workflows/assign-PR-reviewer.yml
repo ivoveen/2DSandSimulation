@@ -18,7 +18,7 @@ jobs:
       - name: Request Review from Contributors
         run: |
           for user in $contributors; do
-            gh pr review ${{ github.event.pull_request.html_url }} --request --reviewer "$user"
+            gh pr edit ${{ github.event.pull_request.number }} --add-reviewer "$user"
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
