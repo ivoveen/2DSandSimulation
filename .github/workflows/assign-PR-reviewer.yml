@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         
-      - name: Get All Contributors
+      - name: Get All Contributors2
         id: contributors
         run: |
           contributors=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
