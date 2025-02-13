@@ -7,6 +7,9 @@ on:
 jobs:
   add-reviewers:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write 
+    
     steps:
           # Checkout the repository so we can interact with it
       - name: Checkout Repository

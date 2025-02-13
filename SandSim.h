@@ -16,8 +16,13 @@ namespace Tmpl8 {
 
 	private:
 		//sand sim data
-		unsigned int* sand;
 
+		struct SandParticle {
+			int x, y;
+			int color;
+		};
+		unsigned int* map;
+		std::vector<>
 		int sandSize = 10;
 		int collums = 0, rows = 0;
 
