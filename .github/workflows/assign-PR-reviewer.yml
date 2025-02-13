@@ -11,7 +11,12 @@ jobs:
           # Checkout the repository so we can interact with it
       - name: Checkout Repository
         uses: actions/checkout@v3
-        
+
+      - name: Checkout Pull Request Branch
+        run: |
+          git fetch origin ${{ github.head_ref }}
+          git checkout ${{ github.head_ref }}
+          
       - name: Get All Contributors2
         id: contributors
         run: |
