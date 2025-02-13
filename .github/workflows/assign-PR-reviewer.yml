@@ -1,0 +1,24 @@
+name: Auto Assign Reviewers
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  add-reviewers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get All Contributors
+        id: contributors
+        run: |
+          contributors=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/contributors" | jq -r '.[].login')
+          echo "contributors=${contributors}" >> $GITHUB_ENV
+
+      - name: Request Review from Contributors
+        run: |
+          for user in $contributors; do
+            gh pr review ${{ github.event.pull_request.html_url }} --request --reviewer "$user"
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
