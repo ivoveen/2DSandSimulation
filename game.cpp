@@ -34,12 +34,17 @@ void Game::Tick(float  deltaTime)
 #ifdef _DEBUG
 	
 #endif
+	if (mousePressed)theSim->PlaceSand(mousePos.x, mousePos.y);
+
 	theSim->Update(deltaTime);
 	theSim->Draw();
 }
 
 void Game::MouseDown(int button) {
-	if (button == GLFW_MOUSE_BUTTON_1)theSim->PlaceSand(mousePos.x, mousePos.y);
+	if (button == GLFW_MOUSE_BUTTON_1)mousePressed = true;
+}
+void Game::MouseUp(int button) {
+	if (button == GLFW_MOUSE_BUTTON_1)mousePressed = false;
 }
 
 

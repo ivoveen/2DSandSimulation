@@ -18,7 +18,7 @@ public:
 	void Tick( float deltaTime );
 	void Shutdown() { /* implement if you want to do something on exit */ }
 	// input handling
-	void MouseUp( int ) { /* implement if you want to detect mouse button presses */ }
+	void MouseUp(int);
 	void MouseDown(int);
 	void MouseMove( int x, int y ) { mousePos.x = x, mousePos.y = y; }
 	void MouseWheel( float ) { /* implement if you want to handle the mouse wheel */ }
@@ -27,6 +27,7 @@ public:
 	// data members
 	int2 mousePos;
 private:
+	bool mousePressed = false;
 	SandSim* theSim;
 };
 
