@@ -8,6 +8,7 @@
 #include "imgui.h"
 #include "SandSim.h"
 
+
 // -----------------------------------------------------------
 // Initialize the application
 // -----------------------------------------------------------
@@ -21,7 +22,6 @@ void Game::Init()
 	
 	theSim = new SandSim(screen);
 
-	
 }
 
 // -----------------------------------------------------------
@@ -30,16 +30,18 @@ void Game::Init()
 void Game::Tick(float  deltaTime)
 {
 	deltaTime = min(deltaTime, 0.1f);
+
 	screen->Clear(0);
 #ifdef _DEBUG
 	
 #endif
+	
 	theSim->Update(deltaTime);
 	theSim->Draw();
 }
 
 void Game::MouseDown(int button) {
-	if (button == GLFW_MOUSE_BUTTON_1)theSim->PlaceSand(mousePos.x, mousePos.y);
+	if (button == GLFW_MOUSE_BUTTON_1)theSim->PlaceSand(mousePos.x, mousePos.y,10);
 }
 
 

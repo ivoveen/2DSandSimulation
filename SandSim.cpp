@@ -1,33 +1,57 @@
-#include "SandSim.h"
 #include "precomp.h"
+#include "SandSim.h"
+#include "tmpl8math.h"
 
 SandSim::SandSim(Surface* screen) {
 	this->screen = screen;
+	collums = SCRWIDTH;
+	rows = SCRHEIGHT;
+	world = (uint*)MALLOC64(collums * rows * sizeof(uint));
 
-	sand = (uint*)MALLOC64(SCRWIDTH * SCRHEIGHT * sizeof(uint));
-
-	//init sand grid
-	for (int i = 0; i < SCRWIDTH; i++) {
-		for (int j = 0; j < SCRHEIGHT; j++) {
-			*(sand + i + j * SCRWIDTH) = 0;
+	//init sand grid as 0
+	for (int i = 0; i < collums; i++) {
+		for (int j = 0; j < rows; j++) {
+			*(world + i + j * collums) = 0;
 		}
 	}
-	collums = SCRWIDTH / sandSize;
-	rows = SCRHEIGHT / sandSize;
-
 }
+
 void SandSim::Update(float dt) {
+	for (int j = 0; j < rows; j++)
+	{
+		for (int i = collums -1; i > 0; i--)
+		{
+			unsigned int id = *(world + i + j * collums);
+			switch (id)
+			{
+			default:
+				break;
+			case particleType::Air:
+				break;
+			case particleType::Sand:
+				if (j == rows-1) break;
 
+				if (*(world + i + (j + 1) * collums) == 0) {
+					*(world + i + (j + 1) * collums) = *(world + i + j * collums);
+					*(world + i + j * collums) = 0;
+				}
+
+				break;
+			case particleType::Water:
+
+				break;
+
+			}
+		}
+	}
 }
 
-void SandSim::PlaceSand(int x, int y, int size) {
-	if(size == 0) size = sandSize;
+void SandSim::PlaceSand(int x, int y, int brushSize) {
+	for (int i = x - brushSize; i < x + brushSize; i++) {
+		for (int j = y - brushSize; j < y + brushSize; j++) {
 
-	for (int i = x - size; i < x + size; i++) {
-		for (int j = y - size; j < y + size; j++) {
-
-			if (i >= 0 && i < SCRWIDTH && j >= 0 && j < SCRHEIGHT) {
-				*(sand + i + j * SCRWIDTH) = 0xffffff;
+			if (i >= 0 && i < collums && j >= 0 && j < rows) {
+				*(world + i + j * collums) = 1;
 			}
 		}
 	}
@@ -35,13 +59,12 @@ void SandSim::PlaceSand(int x, int y, int size) {
 }
 
 void SandSim::Draw() {
-	int halfSandSize = static_cast<int>(floor(sandSize / 2));
-
+	
 	//draw sand grid
-	for (int i = 0; i < SCRWIDTH; i++) {
-		for (int j = 0; j < SCRHEIGHT; j++) {
-			if (*(sand + i + j * SCRWIDTH) != 0) {
-				screen->Bar(i - halfSandSize, j - halfSandSize, i + halfSandSize, j + halfSandSize, *(sand + i + j * SCRWIDTH));
+	for (int i = 0; i < collums; i++) {
+		for (int j = 0; j < rows; j++) {
+			if (*(world + i + j * collums) != 0) {
+				screen->Plot(i, j, 0xFFFFFF);
 			}
 
 		}
